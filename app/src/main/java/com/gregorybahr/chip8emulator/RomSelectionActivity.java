@@ -12,43 +12,53 @@ import android.widget.TextView;
 
 import com.gregorybahr.chip8emulator.emulator.Rom;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class RomSelectionActivity extends AppCompatActivity {
 
-    private ListView romList;
+    private static final String TAG = RomSelectionActivity.class.getSimpleName();
+    private ListView romListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rom_selection);
 
-        romList = (ListView) findViewById(R.id.rom_list);
+        romListView = (ListView) findViewById(R.id.rom_list);
+        romListView.setAdapter(new RomListAdapter(this, R.layout.item_rom_list, loadRomList()));
     }
 
-    private List<Rom> loadRomList() {
-        ArrayList romList = new ArrayList();
-
+    private ArrayList<Rom> loadRomList() {
+        ArrayList<Rom> romList = new ArrayList<>();
+        try {
+            String[] roms = getAssets().list("roms");
+            for(String s : roms) {
+                romList.add(new Rom("roms/"+s, s));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return romList;
     }
 
     private class RomListAdapter extends ArrayAdapter<Rom> {
-
         private List<Rom> objects;
+        private int resource;
 
         public RomListAdapter(Context context, int resource, List<Rom> objects) {
             super(context, resource, objects);
             this.objects = objects;
+            this.resource = resource;
         }
 
         @NonNull
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             if(convertView == null) {
-                convertView = getLayoutInflater().inflate(R.layout.item_rom_list, parent, false);
+                convertView = getLayoutInflater().inflate(resource, parent, false);
             }
-
             Rom rom = objects.get(position);
 
             TextView name = (TextView) convertView.findViewById(R.id.rom_name);

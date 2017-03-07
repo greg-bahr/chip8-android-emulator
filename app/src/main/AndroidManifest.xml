@@ -15,7 +15,8 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".EmulatorActivity">
+        <activity android:name=".EmulatorActivity"
+                  android:screenOrientation="landscape">
         </activity>
     </application>
 
