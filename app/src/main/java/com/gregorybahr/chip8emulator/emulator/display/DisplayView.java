@@ -3,6 +3,7 @@ package com.gregorybahr.chip8emulator.emulator.display;
 import android.content.Context;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
+import android.util.AttributeSet;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
@@ -15,10 +16,9 @@ public class DisplayView extends GLSurfaceView {
 
     private final Renderer renderer;
 
-    public DisplayView(Context context) {
-        super(context);
-
-        renderer = new Renderer();
+    public DisplayView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        this.renderer = new Renderer();
 
         setEGLContextClientVersion(2);
 
@@ -30,7 +30,7 @@ public class DisplayView extends GLSurfaceView {
 
         @Override
         public void onSurfaceCreated(GL10 gl, EGLConfig config) {
-            GLES20.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+            GLES20.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         }
 
         @Override

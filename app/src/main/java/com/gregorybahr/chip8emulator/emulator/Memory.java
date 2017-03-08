@@ -6,9 +6,9 @@ package com.gregorybahr.chip8emulator.emulator;
 
 public class Memory {
 
-    private short[] memory;
+    private int[] memory;
 
-    private short[] fontset = new short[]{
+    private int[] fontset = new int[]{
             0xF0, 0x90, 0x90, 0x90, 0xF0,
             0x20, 0x60, 0x20, 0x20, 0x70,
             0xF0, 0x10, 0xF0, 0x80, 0xF0,
@@ -28,14 +28,14 @@ public class Memory {
     };
 
     public Memory() {
-        memory = new short[4096];
+        memory = new int[4096];
 
         // loading fontset
         for(int i=0; i<80; i++) {
-            memory[i] = (byte) fontset[i];
+            memory[i] = fontset[i];
         }
     }
 
-    public short read(short index) { return memory[index]; }
-    public void write(short num, short index) { memory[index] = num; }
+    public int read(int index) { return memory[index]; }
+    public void write(int num, int index) { memory[index] = num; }
 }

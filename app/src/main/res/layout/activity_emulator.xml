@@ -11,9 +11,10 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.gregorybahr.chip8emulator.EmulatorActivity">
     
-    <android.opengl.GLSurfaceView
+    <com.gregorybahr.chip8emulator.emulator.display.DisplayView
+        android:layout_gravity="center"
         android:id="@+id/surface_view"
-        android:layout_width="384dp"
-        android:layout_height="192dp"/>
+        android:layout_width="448dp"
+        android:layout_height="228dp"/>
 
 </LinearLayout>

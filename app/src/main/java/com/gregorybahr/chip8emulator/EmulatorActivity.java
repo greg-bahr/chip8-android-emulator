@@ -1,6 +1,5 @@
 package com.gregorybahr.chip8emulator;
 
-import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
@@ -8,7 +7,7 @@ import com.gregorybahr.chip8emulator.emulator.display.DisplayView;
 
 public class EmulatorActivity extends AppCompatActivity {
 
-    private GLSurfaceView surfaceView;
+    private DisplayView surfaceView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
