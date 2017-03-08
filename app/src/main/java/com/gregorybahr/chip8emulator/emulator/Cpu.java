@@ -13,7 +13,6 @@ public class Cpu {
     // timers decrease by 1 at a rate of 60hz
     private int index, delayTimer, soundTimer, pc, opcode;
     private Memory memory;
-    private Graphics graphics;
     private HashMap<Integer, Opcode> opcodeTable;
     private Stack<Integer> stack;
 
@@ -23,7 +22,6 @@ public class Cpu {
         displayBuffer = new int[64*32];
         pc = 0x200;
         memory = new Memory();
-        graphics = new Graphics();
         opcodeTable = new HashMap<>();
         stack = new Stack<>();
     }

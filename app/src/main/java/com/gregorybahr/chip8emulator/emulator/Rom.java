@@ -1,10 +1,12 @@
 package com.gregorybahr.chip8emulator.emulator;
 
+import java.io.Serializable;
+
 /**
  * Created by bahrg on 3/6/17.
  */
 
-public class Rom {
+public class Rom implements Serializable {
     private String file;
     private String name;
 
@@ -20,6 +22,4 @@ public class Rom {
     public String getName() {
         return name;
     }
-
-
 }
