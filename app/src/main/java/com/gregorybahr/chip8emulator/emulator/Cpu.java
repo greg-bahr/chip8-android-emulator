@@ -308,7 +308,150 @@ public class Cpu {
             }
         });
 
+        opcodeTable.put(0xE000, new Opcode() {
+            String name = "";
+            @Override
+            public void execute() {
+                opcodeTable.get(opcode & 0xF0FF).execute();
+            }
+        });
 
+        opcodeTable.put(0xE09E, new Opcode() {
+            String name = "SKP Vx";
+            @Override
+            public void execute() {
+                if(inputBuffer[x()] == 1) {
+                    pc += 2;
+                } else {
+                    pc++;
+                }
+            }
+        });
+
+        opcodeTable.put(0xE0A1, new Opcode() {
+            String name = "SKNP Vx";
+            @Override
+            public void execute() {
+                if(inputBuffer[x()] == 0) {
+                    pc += 2;
+                } else {
+                    pc++;
+                }
+            }
+        });
+
+        opcodeTable.put(0xF000, new Opcode() {
+            String name = "";
+            @Override
+            public void execute() {
+                opcodeTable.get(opcode & 0xF0FF).execute();
+            }
+        });
+
+        opcodeTable.put(0xF007, new Opcode() {
+            String name = "LD Vx, DT";
+            @Override
+            public void execute() {
+                registers[x()] = delayTimer;
+                pc++;
+            }
+        });
+
+        opcodeTable.put(0xF00A, new Opcode() {
+            String name = "LD Vx, K";
+            @Override
+            public void execute() {
+                int keyPressed = -1;
+                for (int i = 0; i < inputBuffer.length; i++) {
+                    if(inputBuffer[i] == 1) keyPressed = i;
+                }
+                if(keyPressed >= 0) {
+                    pc++;
+                } else {
+                    pc--;
+                }
+            }
+        });
+
+        opcodeTable.put(0xF015, new Opcode() {
+            String name = "LD DT, Vx";
+            @Override
+            public void execute() {
+                delayTimer = registers[x()];
+                pc++;
+            }
+        });
+
+        opcodeTable.put(0xF018, new Opcode() {
+            String name = "LD ST, Vx";
+            @Override
+            public void execute() {
+                soundTimer = registers[x()];
+                pc++;
+            }
+        });
+
+        opcodeTable.put(0xF01E, new Opcode() {
+            String name = "ADD I, Vx";
+            @Override
+            public void execute() {
+                int value = index + registers[x()];
+
+                if(value > 255) {
+                    registers[0xf] = 1;
+                    index = value - 256;
+                } else {
+                    registers[0xf] = 0;
+                    index = value;
+                }
+                pc++;
+            }
+        });
+
+        opcodeTable.put(0xF029, new Opcode() {
+            String name = "LD F, Vx";
+            @Override
+            public void execute() {
+                index = registers[x()] * 5;
+                pc++;
+            }
+        });
+
+        opcodeTable.put(0xF033, new Opcode() {
+            String name = "LD B, Vx";
+            @Override
+            public void execute() {
+                int num = registers[x()];
+
+                for(int i = 2; i >= 0; i--) {
+                    memory.write(num%10, index+i);
+                    num /= 10;
+                }
+                pc++;
+            }
+        });
+
+        opcodeTable.put(0xF055, new Opcode() {
+            String name = "LD [I], Vx";
+            @Override
+            public void execute() {
+                for(int i = 0; i < registers.length; i++) {
+                    memory.write(registers[i], i+index);
+                }
+                pc++;
+            }
+        });
+
+        opcodeTable.put(0xF065, new Opcode() {
+            String name = "LD Vx, [I]";
+            @Override
+            public void execute() {
+                for(int i = 0; i < registers.length; i++) {
+                    registers[i] = memory.read(index+i);
+                }
+                pc++;
+            }
+        });
     }
 
     private byte x() { return (byte) (opcode & 0x0f00); }
@@ -319,5 +462,9 @@ public class Cpu {
 
     public int[][] getDisplayBuffer() {
         return displayBuffer;
+    }
+
+    public boolean shouldDraw() {
+        return shouldDraw;
     }
 }
