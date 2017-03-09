@@ -18,16 +18,23 @@ public class Cpu {
     private Stack<Integer> stack;
     private boolean shouldDraw;
 
-    public Cpu() {
+    public Cpu(Memory memory) {
         registers = new int[16];
         inputBuffer = new int[16];
         displayBuffer = new int[64][32];
         pc = 0x200;
-        memory = new Memory();
+        this.memory = memory;
         opcodeTable = new HashMap<>();
         stack = new Stack<>();
 
         initOpcodes();
+    }
+
+    public void cycle() {
+        opcode = (memory.read(pc)<<8) | memory.read(++pc);
+        opcodeTable.get(opcode&0xF000).execute();
+        if(delayTimer > 0) delayTimer--;
+        if(soundTimer > 0) soundTimer--;
     }
 
     private void initOpcodes() {
