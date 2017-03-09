@@ -9,7 +9,8 @@ import java.util.Stack;
 
 public class Cpu {
 
-    private int[] inputBuffer, displayBuffer, registers;
+    private int[] inputBuffer, registers;
+    private int[][] displayBuffer;
     // timers decrease by 1 at a rate of 60hz
     private int index, delayTimer, soundTimer, pc, opcode;
     private Memory memory;
@@ -20,7 +21,7 @@ public class Cpu {
     public Cpu() {
         registers = new int[16];
         inputBuffer = new int[16];
-        displayBuffer = new int[64*32];
+        displayBuffer = new int[64][32];
         pc = 0x200;
         memory = new Memory();
         opcodeTable = new HashMap<>();
@@ -44,7 +45,9 @@ public class Cpu {
             @Override
             public void execute() {
                 for (int i = 0; i < displayBuffer.length; i++) {
-                    displayBuffer[i] = 0;
+                    for(int j = 0; j < displayBuffer[i].length; j++) {
+                        displayBuffer[i][j] = 0;
+                    }
                 }
                 pc++;
             }
@@ -293,7 +296,10 @@ public class Cpu {
                     for (int column = 0; column < 8; column++) {
                         if((currentPixelRow & (0x80 >> column)) == 1) {
                             // if this specific bit in the sprite == 1, then draw it
-
+                            if(displayBuffer[(coordy + row)%32][(coordx + column)%64] == 1) {
+                                registers[0xf] = 1;
+                            }
+                            displayBuffer[(coordy + row)%32][(coordx + column)%64] ^= 1;
                         }
                     }
                 }
@@ -301,6 +307,8 @@ public class Cpu {
                 pc++;
             }
         });
+
+
     }
 
     private byte x() { return (byte) (opcode & 0x0f00); }
@@ -309,7 +317,7 @@ public class Cpu {
     private short nnn() { return (byte) (opcode & 0x0fff); }
     private byte n() { return (byte) (opcode & 0x000f); }
 
-    public int[] getDisplayBuffer() {
+    public int[][] getDisplayBuffer() {
         return displayBuffer;
     }
 }
