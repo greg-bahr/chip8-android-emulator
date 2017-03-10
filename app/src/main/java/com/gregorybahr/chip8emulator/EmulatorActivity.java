@@ -22,8 +22,6 @@ public class EmulatorActivity extends AppCompatActivity {
 
     private DisplayView surfaceView;
     private Rom rom;
-    private Memory memory;
-    private Cpu emulator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,19 +29,12 @@ public class EmulatorActivity extends AppCompatActivity {
         setContentView(R.layout.activity_emulator);
 
         rom = (Rom) getIntent().getExtras().get("rom");
-        memory = new Memory();
-        loadRomIntoMemory();
-        emulator = new Cpu(memory);
 
         surfaceView = (DisplayView) findViewById(R.id.surface_view);
         initButtons();
+        surfaceView.loadRomIntoMemory(loadRomIntoByteArray());
+        surfaceView.emulate();
 
-        Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(new Runnable() {
-            @Override
-            public void run() {
-                emulator.cycle();
-            }
-        }, 0, 16, TimeUnit.MILLISECONDS);
     }
 
     public void initButtons() {
@@ -57,10 +48,10 @@ public class EmulatorActivity extends AppCompatActivity {
                 public boolean onTouch(View v, MotionEvent event) {
                     switch (event.getAction()) {
                         case MotionEvent.ACTION_DOWN:
-                            emulator.setInputState(j, true);
+                            surfaceView.setInputState(j, true);
                             break;
                         case MotionEvent.ACTION_UP:
-                            emulator.setInputState(j, false);
+                            surfaceView.setInputState(j, false);
                             break;
                     }
                     return false;
@@ -70,19 +61,18 @@ public class EmulatorActivity extends AppCompatActivity {
         }
     }
 
-    public void loadRomIntoMemory() {
+    public byte[] loadRomIntoByteArray() {
         try {
             InputStream is = getAssets().open(rom.getFile());
             byte[] bytes = new byte[is.available()];
             is.read(bytes);
             is.close();
 
-            for (int i = 0; i < bytes.length; i++) {
-                memory.write((bytes[i]&0xFF), 0x200+i);
-            }
+            return bytes;
 
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return null;
     }
 }

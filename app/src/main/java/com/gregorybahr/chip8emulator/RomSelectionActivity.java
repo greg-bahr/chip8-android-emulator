@@ -47,9 +47,9 @@ public class RomSelectionActivity extends AppCompatActivity {
     private ArrayList<Rom> loadRomList() {
         ArrayList<Rom> romList = new ArrayList<>();
         try {
-            String[] roms = getAssets().list("roms");
+            String[] roms = getAssets().list("");
             for(String s : roms) {
-                romList.add(new Rom("roms/"+s, s));
+                romList.add(new Rom(s, s));
             }
         } catch (IOException e) {
             e.printStackTrace();

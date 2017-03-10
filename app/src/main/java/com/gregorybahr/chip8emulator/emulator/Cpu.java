@@ -37,11 +37,28 @@ public class Cpu {
     }
 
     public void cycle() {
+
+        long waitTime, timeDiff, tpi, startTime, currentTime;
+
+        startTime = System.nanoTime();
+        shouldDraw = false;
         opcode = (memory.read(pc)<<8) | memory.read(++pc);
         opcodeTable.get(opcode&0xF000).execute();
         if(delayTimer > 0) delayTimer--;
         if(soundTimer > 0) soundTimer--;
 
+        currentTime = System.nanoTime();
+        timeDiff = currentTime-startTime;
+        tpi = 1000000000/60;
+        waitTime = tpi-timeDiff;
+
+        if(waitTime > 0) {
+            try {
+                Thread.sleep(waitTime/1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private void initOpcodes() {
