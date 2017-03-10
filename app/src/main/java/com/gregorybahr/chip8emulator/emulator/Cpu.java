@@ -1,5 +1,7 @@
 package com.gregorybahr.chip8emulator.emulator;
 
+import android.util.Log;
+
 import java.util.HashMap;
 import java.util.Stack;
 
@@ -30,11 +32,16 @@ public class Cpu {
         initOpcodes();
     }
 
+    public void setInputState(int index, boolean state) {
+        inputBuffer[index] = state ? 1 : 0;
+    }
+
     public void cycle() {
         opcode = (memory.read(pc)<<8) | memory.read(++pc);
         opcodeTable.get(opcode&0xF000).execute();
         if(delayTimer > 0) delayTimer--;
         if(soundTimer > 0) soundTimer--;
+
     }
 
     private void initOpcodes() {
@@ -69,7 +76,7 @@ public class Cpu {
             }
         });
 
-        opcodeTable.put(0x1, new Opcode() {
+        opcodeTable.put(0x1000, new Opcode() {
             String name = "JMP nnn";
             @Override
             public void execute() {
@@ -77,7 +84,7 @@ public class Cpu {
             }
         });
 
-        opcodeTable.put(0x2, new Opcode() {
+        opcodeTable.put(0x2000, new Opcode() {
             String name = "CALL nnn";
             @Override
             public void execute() {
@@ -86,7 +93,7 @@ public class Cpu {
             }
         });
 
-        opcodeTable.put(0x3, new Opcode() {
+        opcodeTable.put(0x3000, new Opcode() {
             String name = "SE Vx, kk";
             @Override
             public void execute() {
@@ -98,7 +105,7 @@ public class Cpu {
             }
         });
 
-        opcodeTable.put(0x4, new Opcode() {
+        opcodeTable.put(0x4000, new Opcode() {
             String name = "SNE Vx, kk";
             @Override
             public void execute() {
@@ -110,7 +117,7 @@ public class Cpu {
             }
         });
 
-        opcodeTable.put(0x5, new Opcode() {
+        opcodeTable.put(0x5000, new Opcode() {
             String name = "SE Vx, Vy";
             @Override
             public void execute() {
@@ -122,7 +129,7 @@ public class Cpu {
             }
         });
 
-        opcodeTable.put(0x6, new Opcode() {
+        opcodeTable.put(0x6000, new Opcode() {
             String name = "LD Vx, byte";
             @Override
             public void execute() {
@@ -131,7 +138,7 @@ public class Cpu {
             }
         });
 
-        opcodeTable.put(0x7, new Opcode() {
+        opcodeTable.put(0x7000, new Opcode() {
             String name = "ADD Vx, byte";
             @Override
             public void execute() {
@@ -140,7 +147,7 @@ public class Cpu {
             }
         });
 
-        opcodeTable.put(0x8, new Opcode() {
+        opcodeTable.put(0x8000, new Opcode() {
             String name = "LD Vx, Vy";
             @Override
             public void execute() {
@@ -368,6 +375,7 @@ public class Cpu {
             String name = "LD Vx, K";
             @Override
             public void execute() {
+                Log.i("CPU", "Listening for input.");
                 int keyPressed = -1;
                 for (int i = 0; i < inputBuffer.length; i++) {
                     if(inputBuffer[i] == 1) keyPressed = i;
@@ -461,11 +469,11 @@ public class Cpu {
         });
     }
 
-    private byte x() { return (byte) (opcode & 0x0f00); }
-    private byte y() { return (byte) (opcode & 0x00f0); }
-    private byte kk() { return (byte) (opcode & 0x00ff); }
-    private short nnn() { return (byte) (opcode & 0x0fff); }
-    private byte n() { return (byte) (opcode & 0x000f); }
+    private int x() { return (opcode & 0x0f00)>>8; }
+    private int y() { return (opcode & 0x00f0)>>4; }
+    private int kk() { return (opcode & 0x00ff); }
+    private int nnn() { return (opcode & 0x0fff); }
+    private int n() { return (opcode & 0x000f); }
 
     public int[][] getDisplayBuffer() {
         return displayBuffer;

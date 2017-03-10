@@ -20,7 +20,7 @@ import java.util.List;
 
 public class RomSelectionActivity extends AppCompatActivity {
 
-    private static final String TAG = RomSelectionActivity.class.getSimpleName();
+    private static final String TAG = "RomSelectionActivity";
     private ListView romListView;
     private List<Rom> romList;
 
