@@ -2,6 +2,7 @@ package com.gregorybahr.chip8emulator.emulator;
 
 import android.util.Log;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Stack;
 
@@ -23,7 +24,7 @@ public class Cpu {
     public Cpu(Memory memory) {
         registers = new int[16];
         inputBuffer = new int[16];
-        displayBuffer = new int[64][32];
+        displayBuffer = new int[32][64];
         pc = 0x200;
         this.memory = memory;
         opcodeTable = new HashMap<>();
@@ -49,7 +50,7 @@ public class Cpu {
 
         currentTime = System.nanoTime();
         timeDiff = currentTime-startTime;
-        tpi = 1000000000/60;
+        tpi = 1000000/20;
         waitTime = tpi-timeDiff;
 
         if(waitTime > 0) {
@@ -67,6 +68,10 @@ public class Cpu {
             String name = "";
             @Override
             public void execute() {
+                if (opcode == 0) {
+                    pc++;
+                    return;
+                }
                 opcodeTable.get((opcode & 0x00ff)).execute();
             }
         });
@@ -80,6 +85,7 @@ public class Cpu {
                         displayBuffer[i][j] = 0;
                     }
                 }
+                shouldDraw = true;
                 pc++;
             }
         });
@@ -88,8 +94,7 @@ public class Cpu {
             String name = "RET";
             @Override
             public void execute() {
-                stack.pop();
-                pc++;
+                pc = stack.pop();
             }
         });
 
@@ -115,7 +120,7 @@ public class Cpu {
             @Override
             public void execute() {
                 if (registers[x()] == kk()) {
-                    pc += 2;
+                    pc += 3;
                 } else {
                     pc++;
                 }
@@ -127,7 +132,7 @@ public class Cpu {
             @Override
             public void execute() {
                 if (registers[x()] != kk()) {
-                    pc += 2;
+                    pc += 3;
                 } else {
                     pc++;
                 }
@@ -139,7 +144,7 @@ public class Cpu {
             @Override
             public void execute() {
                 if (registers[x()] == registers[y()]) {
-                    pc += 2;
+                    pc += 3;
                 } else {
                     pc++;
                 }
@@ -281,7 +286,7 @@ public class Cpu {
                 if(registers[x()] == registers[y()]) {
                     pc++;
                 } else {
-                    pc += 2;
+                    pc += 3;
                 }
             }
         });
@@ -325,7 +330,7 @@ public class Cpu {
                 for (int row = 0; row < height; row++) {
                     currentPixelRow = memory.read(index + row);
                     for (int column = 0; column < 8; column++) {
-                        if((currentPixelRow & (0x80 >> column)) == 1) {
+                        if((currentPixelRow & (0x80 >> column)) != 0) {
                             // if this specific bit in the sprite == 1, then draw it
                             if(displayBuffer[(coordy + row)%32][(coordx + column)%64] == 1) {
                                 registers[0xf] = 1;
@@ -352,7 +357,7 @@ public class Cpu {
             @Override
             public void execute() {
                 if(inputBuffer[x()] == 1) {
-                    pc += 2;
+                    pc += 3;
                 } else {
                     pc++;
                 }
@@ -364,7 +369,7 @@ public class Cpu {
             @Override
             public void execute() {
                 if(inputBuffer[x()] == 0) {
-                    pc += 2;
+                    pc += 3;
                 } else {
                     pc++;
                 }
@@ -392,7 +397,6 @@ public class Cpu {
             String name = "LD Vx, K";
             @Override
             public void execute() {
-                Log.i("CPU", "Listening for input.");
                 int keyPressed = -1;
                 for (int i = 0; i < inputBuffer.length; i++) {
                     if(inputBuffer[i] == 1) keyPressed = i;
@@ -467,7 +471,7 @@ public class Cpu {
             String name = "LD [I], Vx";
             @Override
             public void execute() {
-                for(int i = 0; i < registers.length; i++) {
+                for(int i = 0; i <= x(); i++) {
                     memory.write(registers[i], i+index);
                 }
                 pc++;
@@ -478,7 +482,7 @@ public class Cpu {
             String name = "LD Vx, [I]";
             @Override
             public void execute() {
-                for(int i = 0; i < registers.length; i++) {
+                for(int i = 0; i <= x(); i++) {
                     registers[i] = memory.read(index+i);
                 }
                 pc++;
