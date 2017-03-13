@@ -4,26 +4,12 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.opengl.GLES20;
-import android.opengl.GLSurfaceView;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import com.gregorybahr.chip8emulator.emulator.Cpu;
 import com.gregorybahr.chip8emulator.emulator.Memory;
-import com.gregorybahr.chip8emulator.emulator.Rom;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Arrays;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
-
-import javax.microedition.khronos.egl.EGLConfig;
-import javax.microedition.khronos.opengles.GL10;
 
 /**
  * Created by bahrg on 2/28/17.
@@ -43,7 +29,6 @@ public class DisplayView extends SurfaceView {
         emulator = new Cpu(memory);
         paint = new Paint();
 
-        setFocusable(true);
         setWillNotDraw(false);
     }
 

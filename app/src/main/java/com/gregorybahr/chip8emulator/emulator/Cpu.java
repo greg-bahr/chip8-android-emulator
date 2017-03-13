@@ -1,8 +1,5 @@
 package com.gregorybahr.chip8emulator.emulator;
 
-import android.util.Log;
-
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Stack;
 
@@ -110,7 +107,7 @@ public class Cpu {
             String name = "CALL nnn";
             @Override
             public void execute() {
-                stack.push(pc);
+                stack.push(pc-1);
                 pc = nnn();
             }
         });
@@ -332,7 +329,7 @@ public class Cpu {
                     for (int column = 0; column < 8; column++) {
                         if((currentPixelRow & (0x80 >> column)) != 0) {
                             // if this specific bit in the sprite == 1, then draw it
-                            if(displayBuffer[(coordy + row)%32][(coordx + column)%64] == 1) {
+                            if(displayBuffer[(coordy + row)%32][(coordx + column)%64] != 0) {
                                 registers[0xf] = 1;
                             }
                             displayBuffer[(coordy + row)%32][(coordx + column)%64] ^= 1;
@@ -398,14 +395,12 @@ public class Cpu {
             @Override
             public void execute() {
                 int keyPressed = -1;
-                for (int i = 0; i < inputBuffer.length; i++) {
-                    if(inputBuffer[i] == 1) keyPressed = i;
+                while(keyPressed < 0) {
+                    for (int i = 0; i < inputBuffer.length; i++) {
+                        if (inputBuffer[i] == 1) keyPressed = i;
+                    }
                 }
-                if(keyPressed >= 0) {
-                    pc++;
-                } else {
-                    pc--;
-                }
+                pc++;
             }
         });
 
@@ -431,15 +426,7 @@ public class Cpu {
             String name = "ADD I, Vx";
             @Override
             public void execute() {
-                int value = index + registers[x()];
-
-                if(value > 255) {
-                    registers[0xf] = 1;
-                    index = value - 256;
-                } else {
-                    registers[0xf] = 0;
-                    index = value;
-                }
+                index += registers[x()];
                 pc++;
             }
         });
