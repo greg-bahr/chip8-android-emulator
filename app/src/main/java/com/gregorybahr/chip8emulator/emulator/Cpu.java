@@ -44,10 +44,10 @@ public class Cpu {
         opcodeTable.get(opcode&0xF000).execute();
         if(delayTimer > 0) delayTimer--;
         if(soundTimer > 0) soundTimer--;
-
+        //Log.i("CPU", Integer.toHexString(opcode));
         currentTime = System.nanoTime();
         timeDiff = currentTime-startTime;
-        tpi = 1000000/20;
+        tpi = 1000000/30;
         waitTime = tpi-timeDiff;
 
         if(waitTime > 0) {
@@ -107,7 +107,7 @@ public class Cpu {
             String name = "CALL nnn";
             @Override
             public void execute() {
-                stack.push(pc-1);
+                stack.push(pc+1);
                 pc = nnn();
             }
         });
@@ -161,7 +161,15 @@ public class Cpu {
             String name = "ADD Vx, byte";
             @Override
             public void execute() {
-                registers[x()] += kk();
+                int value = (registers[x()] + kk());
+
+                if(value > 255) {
+                    registers[0xf] = 1;
+                    registers[x()] = value - 256;
+                } else {
+                    registers[0xf] = 0;
+                    registers[x()] = value;
+                }
                 pc++;
             }
         });
@@ -353,7 +361,7 @@ public class Cpu {
             String name = "SKP Vx";
             @Override
             public void execute() {
-                if(inputBuffer[x()] == 1) {
+                if(inputBuffer[x()] != 0) {
                     pc += 3;
                 } else {
                     pc++;
