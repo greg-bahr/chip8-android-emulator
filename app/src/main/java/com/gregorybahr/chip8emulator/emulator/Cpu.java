@@ -18,12 +18,12 @@ public class Cpu {
     private Stack<Integer> stack;
     private boolean shouldDraw;
 
-    public Cpu(Memory memory) {
+    public Cpu() {
         registers = new int[16];
         inputBuffer = new int[16];
         displayBuffer = new int[32][64];
         pc = 0x200;
-        this.memory = memory;
+        this.memory = new Memory();
         opcodeTable = new HashMap<>();
         stack = new Stack<>();
 
@@ -493,6 +493,10 @@ public class Cpu {
 
     public int[][] getDisplayBuffer() {
         return displayBuffer;
+    }
+
+    public Memory getMemory() {
+        return memory;
     }
 
     public boolean shouldDraw() {

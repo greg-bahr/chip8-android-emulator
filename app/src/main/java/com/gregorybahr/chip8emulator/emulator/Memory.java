@@ -28,6 +28,12 @@ public class Memory {
     };
 
     public Memory() {
+        reset();
+    }
+
+    public int read(int index) { return memory[index]; }
+    public void write(int num, int index) { memory[index] = num; }
+    public void reset() {
         memory = new int[4096];
 
         // loading fontset
@@ -35,7 +41,4 @@ public class Memory {
             memory[i] = fontset[i];
         }
     }
-
-    public int read(int index) { return memory[index]; }
-    public void write(int num, int index) { memory[index] = num; }
 }

@@ -6,15 +6,11 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 
-import com.gregorybahr.chip8emulator.emulator.Cpu;
-import com.gregorybahr.chip8emulator.emulator.Memory;
 import com.gregorybahr.chip8emulator.emulator.Rom;
 import com.gregorybahr.chip8emulator.emulator.display.DisplayView;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 public class EmulatorActivity extends AppCompatActivity {
 
@@ -74,5 +70,11 @@ public class EmulatorActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        surfaceView.stopEmulation();
     }
 }
