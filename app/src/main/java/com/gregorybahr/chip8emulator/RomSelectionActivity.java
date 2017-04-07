@@ -12,7 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.gregorybahr.chip8emulator.emulator.Rom;
+import com.gregorybahr.chip8emulator.emulators.chip8.Rom;
 
 import java.io.IOException;
 import java.util.ArrayList;

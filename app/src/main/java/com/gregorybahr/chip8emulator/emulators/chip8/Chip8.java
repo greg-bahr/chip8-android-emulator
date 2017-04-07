@@ -1,4 +1,4 @@
-package com.gregorybahr.chip8emulator.emulator;
+package com.gregorybahr.chip8emulator.emulators.chip8;
 
 import java.util.HashMap;
 import java.util.Stack;
@@ -7,7 +7,7 @@ import java.util.Stack;
  * Created by bahrg on 2/28/17.
  */
 
-public class Cpu {
+public class Chip8 {
 
     private int[] inputBuffer, registers;
     private int[][] displayBuffer;
@@ -18,7 +18,7 @@ public class Cpu {
     private Stack<Integer> stack;
     private boolean shouldDraw;
 
-    public Cpu() {
+    public Chip8() {
         registers = new int[16];
         inputBuffer = new int[16];
         displayBuffer = new int[32][64];

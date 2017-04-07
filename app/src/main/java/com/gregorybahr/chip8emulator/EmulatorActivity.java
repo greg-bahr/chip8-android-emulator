@@ -6,8 +6,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 
-import com.gregorybahr.chip8emulator.emulator.Rom;
-import com.gregorybahr.chip8emulator.emulator.display.DisplayView;
+import com.gregorybahr.chip8emulator.emulators.chip8.Rom;
+import com.gregorybahr.chip8emulator.emulators.chip8.display.DisplayViewChip8;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,7 +16,7 @@ public class EmulatorActivity extends AppCompatActivity {
 
     private static final String TAG = "EmulatorActivity";
 
-    private DisplayView surfaceView;
+    private DisplayViewChip8 surfaceView;
     private Rom rom;
 
     @Override
@@ -26,7 +26,7 @@ public class EmulatorActivity extends AppCompatActivity {
 
         rom = (Rom) getIntent().getExtras().get("rom");
 
-        surfaceView = (DisplayView) findViewById(R.id.surface_view);
+        surfaceView = (DisplayViewChip8) findViewById(R.id.surface_view);
         initButtons();
         surfaceView.loadRomIntoMemory(loadRomIntoByteArray());
         surfaceView.emulate();

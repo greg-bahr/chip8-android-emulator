@@ -1,4 +1,4 @@
-package com.gregorybahr.chip8emulator.emulator.display;
+package com.gregorybahr.chip8emulator.emulators.chip8.display;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -7,23 +7,23 @@ import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.SurfaceView;
 
-import com.gregorybahr.chip8emulator.emulator.Cpu;
+import com.gregorybahr.chip8emulator.emulators.chip8.Chip8;
 
 /**
  * Created by bahrg on 2/28/17.
  */
 
-public class DisplayView extends SurfaceView {
+public class DisplayViewChip8 extends SurfaceView {
 
     private Paint paint;
-    private Cpu emulator;
+    private Chip8 emulator;
     private int viewWidth, viewHeight;
     private Thread thread;
     private boolean emulating;
 
-    public DisplayView(Context context, AttributeSet attrs) {
+    public DisplayViewChip8(Context context, AttributeSet attrs) {
         super(context, attrs);
-        emulator = new Cpu();
+        emulator = new Chip8();
         paint = new Paint();
         paint.setColor(Color.WHITE);
 

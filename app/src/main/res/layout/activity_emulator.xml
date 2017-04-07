@@ -11,7 +11,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.gregorybahr.chip8emulator.EmulatorActivity">
     
-    <com.gregorybahr.chip8emulator.emulator.display.DisplayView
+    <com.gregorybahr.chip8emulator.emulators.chip8.display.DisplayViewChip8
         android:layout_gravity="center"
         android:id="@+id/surface_view"
         android:layout_width="448dp"
