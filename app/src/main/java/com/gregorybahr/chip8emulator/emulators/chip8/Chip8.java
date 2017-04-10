@@ -1,5 +1,7 @@
 package com.gregorybahr.chip8emulator.emulators.chip8;
 
+import com.gregorybahr.chip8emulator.emulators.emulatorbase.Opcode;
+
 import java.util.HashMap;
 import java.util.Stack;
 
@@ -13,8 +15,8 @@ public class Chip8 {
     private int[][] displayBuffer;
     // timers decrease by 1 at a rate of 60hz
     private int index, delayTimer, soundTimer, pc, opcode;
-    private Memory memory;
     private HashMap<Integer, Opcode> opcodeTable;
+    private Chip8Memory memory;
     private Stack<Integer> stack;
     private boolean shouldDraw;
 
@@ -23,7 +25,7 @@ public class Chip8 {
         inputBuffer = new int[16];
         displayBuffer = new int[32][64];
         pc = 0x200;
-        this.memory = new Memory();
+        memory = new Chip8Memory();
         opcodeTable = new HashMap<>();
         stack = new Stack<>();
 
@@ -495,7 +497,7 @@ public class Chip8 {
         return displayBuffer;
     }
 
-    public Memory getMemory() {
+    public Chip8Memory getMemory() {
         return memory;
     }
 

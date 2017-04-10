@@ -1,4 +1,4 @@
-package com.gregorybahr.chip8emulator.emulators.chip8;
+package com.gregorybahr.chip8emulator.emulators.emulatorbase;
 
 import java.io.Serializable;
 

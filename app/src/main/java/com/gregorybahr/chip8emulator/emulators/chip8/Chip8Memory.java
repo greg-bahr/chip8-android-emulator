@@ -1,12 +1,12 @@
 package com.gregorybahr.chip8emulator.emulators.chip8;
 
+import com.gregorybahr.chip8emulator.emulators.emulatorbase.Memory;
+
 /**
  * Created by bahrg on 2/28/17.
  */
 
-public class Memory {
-
-    private int[] memory;
+public class Chip8Memory extends Memory {
 
     private int[] fontset = new int[]{
             0xF0, 0x90, 0x90, 0x90, 0xF0,
@@ -27,12 +27,10 @@ public class Memory {
             0xF0, 0x80, 0xF0, 0x80, 0x80
     };
 
-    public Memory() {
+    public Chip8Memory() {
         reset();
     }
 
-    public int read(int index) { return memory[index]; }
-    public void write(int num, int index) { memory[index] = num; }
     public void reset() {
         memory = new int[4096];
 

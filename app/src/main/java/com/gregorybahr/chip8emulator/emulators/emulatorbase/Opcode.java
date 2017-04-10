@@ -1,4 +1,4 @@
-package com.gregorybahr.chip8emulator.emulators.chip8;
+package com.gregorybahr.chip8emulator.emulators.emulatorbase;
 
 /**
  * Created by bahrg on 2/28/17.

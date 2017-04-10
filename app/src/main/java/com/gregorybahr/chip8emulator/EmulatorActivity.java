@@ -6,8 +6,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 
-import com.gregorybahr.chip8emulator.emulators.chip8.Rom;
 import com.gregorybahr.chip8emulator.emulators.chip8.display.DisplayViewChip8;
+import com.gregorybahr.chip8emulator.emulators.emulatorbase.Rom;
 
 import java.io.IOException;
 import java.io.InputStream;
