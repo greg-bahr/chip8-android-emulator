@@ -12,9 +12,9 @@ import com.gregorybahr.chip8emulator.emulators.emulatorbase.Rom;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class EmulatorActivity extends AppCompatActivity {
+public class Chip8EmulatorActivity extends AppCompatActivity {
 
-    private static final String TAG = "EmulatorActivity";
+    private static final String TAG = "Chip8EmulatorActivity";
 
     private DisplayViewChip8 surfaceView;
     private Rom rom;
@@ -22,7 +22,7 @@ public class EmulatorActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_emulator_chip8);
+        setContentView(R.layout.activity_chip8_emulator);
 
         rom = (Rom) getIntent().getExtras().get("rom");
 

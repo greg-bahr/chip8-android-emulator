@@ -18,9 +18,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RomSelectionActivity extends AppCompatActivity {
+public class Chip8RomSelectionActivity extends AppCompatActivity {
 
-    private static final String TAG = "RomSelectionActivity";
+    private static final String TAG = "Chip8RomSelectionActivity";
     private ListView romListView;
     private List<Rom> romList;
 
@@ -37,7 +37,7 @@ public class RomSelectionActivity extends AppCompatActivity {
         romListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(RomSelectionActivity.this, EmulatorActivity.class);
+                Intent intent = new Intent(Chip8RomSelectionActivity.this, Chip8EmulatorActivity.class);
                 intent.putExtra("rom", romList.get(position));
                 startActivity(intent);
             }
