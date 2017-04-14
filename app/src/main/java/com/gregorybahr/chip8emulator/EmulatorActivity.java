@@ -22,7 +22,7 @@ public class EmulatorActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_emulator);
+        setContentView(R.layout.activity_emulator_chip8);
 
         rom = (Rom) getIntent().getExtras().get("rom");
 

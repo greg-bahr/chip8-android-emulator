@@ -14,8 +14,8 @@
     <com.gregorybahr.chip8emulator.emulators.chip8.display.DisplayViewChip8
         android:layout_gravity="center"
         android:id="@+id/surface_view"
-        android:layout_width="448dp"
-        android:layout_height="228dp"/>
+        android:layout_width="340dp"
+        android:layout_height="180dp"/>
 
     <GridLayout
         android:layout_width="wrap_content"
