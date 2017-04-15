@@ -1,5 +1,7 @@
 package com.gregorybahr.chip8emulator.emulators.emulatorbase;
 
+import com.gregorybahr.chip8emulator.emulators.EmulatorType;
+
 import java.io.Serializable;
 
 /**
@@ -9,14 +11,20 @@ import java.io.Serializable;
 public class Rom implements Serializable {
     private String file;
     private String name;
+    private EmulatorType emulatorType;
 
-    public Rom(String file, String name) {
+    public Rom(String file, String name,EmulatorType emulatorType) {
         this.file = file;
         this.name = name;
+        this.emulatorType = emulatorType;
     }
 
     public String getFile() {
         return file;
+    }
+
+    public EmulatorType getEmulatorType() {
+        return emulatorType;
     }
 
     public String getName() {
