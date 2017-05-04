@@ -49,7 +49,7 @@ public class Chip8 {
         //Log.i("CPU", Integer.toHexString(opcode));
         currentTime = System.nanoTime();
         timeDiff = currentTime-startTime;
-        tpi = 1000000/30;
+        tpi = 1000000/15;
         waitTime = tpi-timeDiff;
 
         if(waitTime > 0) {
@@ -436,7 +436,15 @@ public class Chip8 {
             String name = "ADD I, Vx";
             @Override
             public void execute() {
-                index += registers[x()];
+                int value = index + registers[x()];
+
+                if(value > 0x0fff) {
+                    registers[0xf] = 1;
+                    index = value - (0x0fff+1);
+                } else {
+                    registers[0xf] = 0;
+                    index = value;
+                }
                 pc++;
             }
         });
