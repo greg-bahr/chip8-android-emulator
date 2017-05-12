@@ -23,7 +23,7 @@ public class DisplayViewChip8 extends SurfaceView {
 
     public DisplayViewChip8(Context context, AttributeSet attrs) {
         super(context, attrs);
-        emulator = new Chip8();
+        emulating = true;
         paint = new Paint();
         paint.setColor(Color.WHITE);
 
@@ -31,7 +31,6 @@ public class DisplayViewChip8 extends SurfaceView {
     }
 
     public void emulate() {
-        emulating = true;
         thread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -47,6 +46,7 @@ public class DisplayViewChip8 extends SurfaceView {
     }
 
     public void loadRomIntoMemory(byte[] array) {
+        emulator = new Chip8();
         byte[] bytes = array;
         emulator.getMemory().reset();
         for (int i = 0; i < bytes.length; i++) {
@@ -87,7 +87,16 @@ public class DisplayViewChip8 extends SurfaceView {
         this.viewHeight = h;
     }
 
-    public void stopEmulation() { emulating = false; }
+    public void setEmulating(boolean emul) { emulating = emul; }
+    public boolean isEmulating() { return emulating; }
+
+    public void incSpeed() {
+        emulator.incSpeed();
+    }
+
+    public void decSpeed() {
+        emulator.decSpeed();
+    }
 
     public void setInputState(int index, boolean state) {
         emulator.setInputState(index, state);

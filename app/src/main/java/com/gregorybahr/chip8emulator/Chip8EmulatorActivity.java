@@ -17,6 +17,7 @@ public class Chip8EmulatorActivity extends AppCompatActivity {
     private static final String TAG = "Chip8EmulatorActivity";
 
     private DisplayViewChip8 surfaceView;
+    private Button pause, slowEmulationButton, fastEmulationButton, restartEmulationButton;
     private Rom rom;
 
     @Override
@@ -28,6 +29,43 @@ public class Chip8EmulatorActivity extends AppCompatActivity {
 
         surfaceView = (DisplayViewChip8) findViewById(R.id.surface_view);
         initButtons();
+
+        pause = (Button) findViewById(R.id.pause_emulation_button);
+        pause.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                surfaceView.setEmulating(!surfaceView.isEmulating());
+                surfaceView.emulate();
+            }
+        });
+
+        slowEmulationButton = (Button) findViewById(R.id.slow_emulation_button);
+        slowEmulationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                surfaceView.decSpeed();
+            }
+        });
+
+        fastEmulationButton = (Button) findViewById(R.id.speedup_emulation_button);
+        fastEmulationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                surfaceView.incSpeed();
+            }
+        });
+
+        restartEmulationButton = (Button) findViewById(R.id.restart_emulation_button);
+        restartEmulationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                surfaceView.setEmulating(false);
+                surfaceView.loadRomIntoMemory(loadRomIntoByteArray());
+                surfaceView.setEmulating(true);
+                surfaceView.emulate();
+            }
+        });
+
         surfaceView.loadRomIntoMemory(loadRomIntoByteArray());
         surfaceView.emulate();
 
@@ -75,6 +113,6 @@ public class Chip8EmulatorActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        surfaceView.stopEmulation();
+        surfaceView.setEmulating(false);
     }
 }

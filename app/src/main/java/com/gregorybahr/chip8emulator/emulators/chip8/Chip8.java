@@ -1,5 +1,7 @@
 package com.gregorybahr.chip8emulator.emulators.chip8;
 
+import android.util.Log;
+
 import com.gregorybahr.chip8emulator.emulators.emulatorbase.Opcode;
 
 import java.util.HashMap;
@@ -19,6 +21,9 @@ public class Chip8 {
     private Chip8Memory memory;
     private Stack<Integer> stack;
     private boolean shouldDraw;
+    private int tpi;
+
+    // add pause/play, restart, fast forward, slowdown
 
     public Chip8() {
         registers = new int[16];
@@ -28,6 +33,7 @@ public class Chip8 {
         memory = new Chip8Memory();
         opcodeTable = new HashMap<>();
         stack = new Stack<>();
+        tpi = 80000;
 
         initOpcodes();
     }
@@ -38,7 +44,7 @@ public class Chip8 {
 
     public void cycle() {
 
-        long waitTime, timeDiff, tpi, startTime, currentTime;
+        long waitTime, timeDiff, startTime, currentTime;
 
         startTime = System.nanoTime();
         shouldDraw = false;
@@ -49,7 +55,6 @@ public class Chip8 {
         //Log.i("CPU", Integer.toHexString(opcode));
         currentTime = System.nanoTime();
         timeDiff = currentTime-startTime;
-        tpi = 1000000/15;
         waitTime = tpi-timeDiff;
 
         if(waitTime > 0) {
@@ -511,5 +516,14 @@ public class Chip8 {
 
     public boolean shouldDraw() {
         return shouldDraw;
+    }
+
+    public void incSpeed() {
+        tpi -= 10000;
+        Log.i("Chip8", ""+tpi);
+    }
+
+    public void decSpeed() {
+        tpi += 10000;
     }
 }
