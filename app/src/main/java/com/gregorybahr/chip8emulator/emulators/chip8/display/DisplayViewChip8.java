@@ -24,6 +24,7 @@ public class DisplayViewChip8 extends SurfaceView {
     public DisplayViewChip8(Context context, AttributeSet attrs) {
         super(context, attrs);
         emulating = true;
+        emulator = new Chip8();
         paint = new Paint();
         paint.setColor(Color.WHITE);
 
@@ -45,8 +46,13 @@ public class DisplayViewChip8 extends SurfaceView {
         thread.start();
     }
 
+    public void stop() {
+        thread.interrupt();
+        thread = null;
+    }
+
     public void loadRomIntoMemory(byte[] array) {
-        emulator = new Chip8();
+        emulator.reset();
         byte[] bytes = array;
         emulator.getMemory().reset();
         for (int i = 0; i < bytes.length; i++) {

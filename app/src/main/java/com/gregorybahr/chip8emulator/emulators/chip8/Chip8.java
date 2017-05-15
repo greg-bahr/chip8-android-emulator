@@ -1,7 +1,5 @@
 package com.gregorybahr.chip8emulator.emulators.chip8;
 
-import android.util.Log;
-
 import com.gregorybahr.chip8emulator.emulators.emulatorbase.Opcode;
 
 import java.util.HashMap;
@@ -26,11 +24,20 @@ public class Chip8 {
     // add pause/play, restart, fast forward, slowdown
 
     public Chip8() {
+        reset();
+    }
+
+    public void reset() {
+        index = 0;
+        delayTimer = 0;
+        soundTimer = 0;
+        opcode = 0;
         registers = new int[16];
         inputBuffer = new int[16];
         displayBuffer = new int[32][64];
         pc = 0x200;
         memory = new Chip8Memory();
+        memory.reset();
         opcodeTable = new HashMap<>();
         stack = new Stack<>();
         tpi = 80000;
@@ -520,7 +527,6 @@ public class Chip8 {
 
     public void incSpeed() {
         tpi -= 10000;
-        Log.i("Chip8", ""+tpi);
     }
 
     public void decSpeed() {

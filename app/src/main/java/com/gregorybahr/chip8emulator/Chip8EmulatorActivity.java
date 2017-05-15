@@ -60,6 +60,7 @@ public class Chip8EmulatorActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 surfaceView.setEmulating(false);
+                surfaceView.stop();
                 surfaceView.loadRomIntoMemory(loadRomIntoByteArray());
                 surfaceView.setEmulating(true);
                 surfaceView.emulate();
